@@ -2,8 +2,6 @@ clear all
 close all
 clc
 
-addpath('fcn');
-
 % load data
 load ../data/sc_fc_data_singlesubject.mat
 d = squareform(pdist(coor));
