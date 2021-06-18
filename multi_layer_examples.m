@@ -1,11 +1,14 @@
-clear all
+clearvars
 close all
 clc
+
+% visualize the modularity matrix?
+viz = 1 ;
 
 %% example 1. time-varying fc (using with uniform null model)
 
 % load data
-load ../data/fmri_ts_data_singlesubject.mat
+load ./data/fmri_ts_data_singlesubject.mat
 [numframes,n] = size(ts);
 
 % window size for sliding window analysis
@@ -31,10 +34,17 @@ for iwindow = 1:numwindows
 end
 b = b + omega*spdiags(ones(n*numwindows,2),[-n,n],n*numwindows,n*numwindows);
 
+if viz
+    imagesc(b)
+    title('time-varying fc modularity matrix')
+    waitforbuttonpress
+    close
+end
+
 %% example 2. multisubject categorical (using fc with uniform null model)
 
-% load data
-load ../data/sc_fc_data_multisubject.mat
+% load fc for five subjects
+load ./data/sc_fc_data_multisubject.mat
 
 % structural resolution parameter
 gamma = 0.1;
@@ -52,10 +62,17 @@ end
 all2all = n*[(-nsub+1):-1,1:(nsub-1)];
 b = b + omega*spdiags(ones(n*nsub,2*nsub-2),all2all,n*nsub,n*nsub);
 
+if viz
+    imagesc(b)
+    title('multisubject categorical modularity matrix')
+    waitforbuttonpress
+    close
+end
+
 %% example 3. multisubject/multimodal coupling
 
-% load data
-load ../data/sc_fc_data_multisubject.mat
+% load fc + sc for five subjects
+load ./data/sc_fc_data_multisubject.mat
 
 % structural resolution parameter
 gamma_fc = 0.3;
@@ -83,3 +100,9 @@ bsc = bsc + omega*spdiags(ones(n*nsub,2*nsub-2),all2all,n*nsub,n*nsub);
 bfc = bfc + omega*spdiags(ones(n*nsub,2*nsub-2),all2all,n*nsub,n*nsub);
 b = [bsc, eta*eye(nsub*n); eta*eye(nsub*n), bfc];
 
+if viz
+    imagesc(b)
+    title('multisubject/multimodal modularity matrix')
+    waitforbuttonpress
+    close
+end
