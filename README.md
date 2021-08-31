@@ -24,6 +24,13 @@ What is here?
   - example 9. signed and weighted version of the Newman-Girvan null model. this version weights positive contributions more strongly.
 		
 2. multi_layer_examples.m - generates flattened multi-layer modularity matrices (see Fig. 4).
+
+  - example 1. time-varying functional connectivity with uniform null model and nearest neighbor interlayer coupling.
+  
+  - example 2. multi-subject functional connectivity with uniform null model and all-to-all coupling.
+  
+  - example 3. multi-modal structural and functional connectivity with all-to-all coupling and within-subject coupling.
+
 3. fcn/ - a set of helper functions for implementing the different models.
 4. data/ - example FC and SC matrices.
 
