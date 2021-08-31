@@ -1,4 +1,4 @@
-# nonstandard_modularity_maximization
+# nonstandard modularity maximization
 
 This repository contains a series of scripts for generating non-standard null models to be used with modularity maximization.
 
