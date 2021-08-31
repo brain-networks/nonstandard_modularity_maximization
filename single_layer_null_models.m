@@ -1,9 +1,15 @@
-clear all
+clearvars
 close all
 clc
 
-% load data
-load ../data/sc_fc_data_singlesubject.mat
+addpath('./fcn/')
+
+% visualize the modularity matrix?
+viz = 1 ;
+
+%% load data
+
+load ./data/sc_fc_data_singlesubject.mat
 d = squareform(pdist(coor));
 n = length(sc);
 
@@ -15,6 +21,13 @@ deg = sum(sc,2);
 twom = sum(deg);
 p = (deg*deg')/twom;
 b = sc - p;
+
+if viz
+    imagesc(b)
+    title('degree-/strength-preserving null modularity matrix')
+    waitforbuttonpress
+    close
+end
 
 % reference:
 %   
@@ -49,6 +62,13 @@ end
 p = nanmean(wr,3);
 b = sc - p;
 
+if viz
+    imagesc(b)
+    title('newman girvan (no loops) null modularity matrix')
+    waitforbuttonpress
+    close
+end
+
 %% example 3. uniform
 
 % all connections (except for self-loops) have an expected weight equal to
@@ -57,6 +77,13 @@ b = sc - p;
 gamma = 0.01;
 p = ~eye(n)*gamma;
 b = sc - p;
+
+if viz
+    imagesc(b)
+    title('uniform null modularity matrix')
+    waitforbuttonpress
+    close
+end
 
 % reference(s):
 %   
@@ -101,6 +128,13 @@ end
 p = nanmean(p,3);
 b = sc - p;
 
+if viz
+    imagesc(b)
+    title('geometric null modularity matrix')
+    waitforbuttonpress
+    close
+end
+
 % reference(s):
 %   
 %   Betzel, R. F., Avena-Koenigsberger, A., Goñi, J., He, Y., De Reus, M. 
@@ -122,6 +156,13 @@ p(edges(ddx(1:m))) = w;
 p = p + p';
 b = sc - p;
 
+if viz
+    imagesc(b)
+    title('minimum wiring null modularity matrix')
+    waitforbuttonpress
+    close
+end
+
 % reference(s):
 %   
 %   Samu, D., Seth, A. K., & Nowotny, T. (2014). Influence of wiring cost 
@@ -138,11 +179,18 @@ nbins = 31;
 nswap = 1e4;
 q = zeros(n,n,numiter);
 for iter = 1:numiter
-    [~,ar] = fcn_match_length_degree_distribution(sc,d,nbins,nswap,false);
+    [~,ar] = fcn_match_length_degree_distribution(sc,d,nbins,nswap,true);
     q(:,:,iter) = ar + ar';
 end
 p = nanmean(q,3);
 b = sc - p;
+
+if viz
+    imagesc(b)
+    title('degree + space null modularity matrix')
+    waitforbuttonpress
+    close
+end
 
 % reference(s):
 %   
@@ -158,6 +206,13 @@ b = sc - p;
 avg = mean(nonzeros(sc));
 p = (sc > 0)*avg;
 b = sc - p;
+
+if viz
+    imagesc(b)
+    title('binary null modularity matrix')
+    waitforbuttonpress
+    close
+end
 
 % reference(s):
 %   
@@ -181,12 +236,19 @@ kneg = sum(fcneg,2);
 twomneg = sum(kneg);
 ppos = (kpos*kpos')/twompos;
 pneg = (kneg*kneg')/twomneg;
-wpos = twompos/(twompos + twomneg);
-wneg = twomneg/(twompos + twomneg);
+% wpos = twompos/(twompos + twomneg);
+% wneg = twomneg/(twompos + twomneg);
 bpos = (fcpos - ppos);
 bneg = (fcneg - pneg);
 
 b = bpos/(twompos + twomneg) - bneg/(twompos + twomneg);
+
+if viz
+    imagesc(b)
+    title('signed and weighted null modularity matrix')
+    waitforbuttonpress
+    close
+end
 
 % reference(s):
 % 
@@ -216,6 +278,13 @@ bpos = (fcpos - ppos);
 bneg = (fcneg - pneg);
 
 b = bpos/(twompos) - bneg/(twompos + twomneg);
+
+if viz
+    imagesc(b)
+    title('signed and weighted (unequal wei) null modularity matrix')
+    waitforbuttonpress
+    close
+end
 
 % reference(s):
 % 
